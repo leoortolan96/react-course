@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import MeetupsList from "../components/meetups/MeetupList";
+import FavoritesContext from "../store/favorites-context";
 
 // const DUMMY_DATA = [
 //   {
@@ -37,7 +38,7 @@ function AllMeetupsPage() {
         favorites = favorites.concat(meetup);
       }
     });
-    favoritesCtx.setFavorites(favorites);
+    favoritesCtx.setFavorites(favorites, false);
   }
 
   useEffect(() => {
@@ -55,7 +56,7 @@ function AllMeetupsPage() {
           };
           meetups.push(meetup);
         }
-        console.log(meetups);
+        setFavoriteMeetupsFromStorage(meetups);
         setLoadedMeetups(meetups);
         setIsLoading(false);
       });
