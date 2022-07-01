@@ -16,7 +16,7 @@ export default function MeetupItem(props) {
         image: props.image,
         address: props.address,
         description: props.description,
-      });
+      }, true);
     }
   }
 
