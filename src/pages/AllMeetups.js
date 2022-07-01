@@ -1,6 +1,5 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import MeetupsList from "../components/meetups/MeetupList";
-import FavoritesContext from "../store/favorites-context";
 
 // const DUMMY_DATA = [
 //   {
@@ -26,19 +25,6 @@ import FavoritesContext from "../store/favorites-context";
 function AllMeetupsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadedMeetups, setLoadedMeetups] = useState([]);
-  const favoritesCtx = useContext(FavoritesContext);
-
-  function setFavoriteMeetupsFromStorage(meetups) {
-    const favoritesFromStorage = localStorage.getItem("favorite_meetup_ids");
-    const favoriteMeetupIds = favoritesFromStorage !== null ? JSON.parse(favoritesFromStorage) : [];
-
-    favoritesCtx.favorites = [];
-    meetups.forEach((meetup) => {
-      if (favoriteMeetupIds.some((meetupId) => meetupId === meetup.id)) {
-        favoritesCtx.addFavorite(meetup, false);
-      }
-    });
-  }
 
   useEffect(() => {
     setIsLoading(true);
@@ -55,8 +41,7 @@ function AllMeetupsPage() {
           };
           meetups.push(meetup);
         }
-        // console.log(meetups);
-        setFavoriteMeetupsFromStorage(meetups);
+        console.log(meetups);
         setLoadedMeetups(meetups);
         setIsLoading(false);
       });
