@@ -3,7 +3,7 @@ import { createContext, useState } from "react";
 const FavoritesContext = createContext({
   favorites: [],
   totalFavorites: 0,
-  addFavorite: (favoriteMeetup) => {},
+  addFavorite: (favoriteMeetup, saveToLocalStorage) => {},
   removeFavorite: (meetupId) => {},
   itemIsFavorite: (meetupId) => {},
   setFavorites: (favoriteMeetups) => {},
@@ -12,7 +12,7 @@ const FavoritesContext = createContext({
 export function FavoritesContextProvider(props) {
   const [userFavorites, setUserFavorites] = useState([]);
 
-  function addFavoriteHandler(favoriteMeetup) {
+  function addFavoriteHandler(favoriteMeetup, saveToLocalStorage) {
     setUserFavorites((prevUserFavorites) => {
       var result = prevUserFavorites;
       if (!result.some((meetup) => meetup.id === favoriteMeetup.id)) {
@@ -38,7 +38,7 @@ export function FavoritesContextProvider(props) {
         "favorite_meetup_ids",
         JSON.stringify(result.map((meetup) => meetup.id))
       );
-      console.log(JSON.stringify(result.map((meetup) => meetup.id)));
+      // console.log(JSON.stringify(result.map((meetup) => meetup.id)));
       return result;
     });
   }
