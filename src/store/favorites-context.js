@@ -6,6 +6,7 @@ const FavoritesContext = createContext({
   addFavorite: (favoriteMeetup) => {},
   removeFavorite: (meetupId) => {},
   itemIsFavorite: (meetupId) => {},
+  setFavorites: (favoriteMeetups) => {},
 });
 
 export function FavoritesContextProvider(props) {
@@ -13,18 +14,41 @@ export function FavoritesContextProvider(props) {
 
   function addFavoriteHandler(favoriteMeetup) {
     setUserFavorites((prevUserFavorites) => {
-      return prevUserFavorites.concat(favoriteMeetup);
+      var result = prevUserFavorites;
+      if (!result.some((meetup) => meetup.id === favoriteMeetup.id)) {
+        result = result.concat(favoriteMeetup);
+      }
+      if (saveToLocalStorage) {
+        localStorage.setItem(
+          "favorite_meetup_ids",
+          JSON.stringify(result.map((meetup) => meetup.id))
+        );
+      }
+      // console.log(JSON.stringify(result.map((meetup) => meetup.id)));
+      return result;
     });
   }
 
   function removeFavoriteHandler(meetupId) {
     setUserFavorites((prevUserFavorites) => {
-      return prevUserFavorites.filter((meetup) => meetupId !== meetup.id);
+      const result = prevUserFavorites.filter(
+        (meetup) => meetupId !== meetup.id
+      );
+      localStorage.setItem(
+        "favorite_meetup_ids",
+        JSON.stringify(result.map((meetup) => meetup.id))
+      );
+      console.log(JSON.stringify(result.map((meetup) => meetup.id)));
+      return result;
     });
   }
 
   function itemIsFavoriteHandler(meetupId) {
     return userFavorites.some((meetup) => meetupId === meetup.id);
+  }
+
+  function setFavoritesHandler(favoriteMeetups) {
+    setUserFavorites(favoriteMeetups);
   }
 
   const context = {
@@ -33,6 +57,7 @@ export function FavoritesContextProvider(props) {
     addFavorite: addFavoriteHandler,
     removeFavorite: removeFavoriteHandler,
     itemIsFavorite: itemIsFavoriteHandler,
+    setFavorites: setFavoritesHandler,
   };
 
   return (

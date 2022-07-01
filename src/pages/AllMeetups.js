@@ -25,6 +25,20 @@ import MeetupsList from "../components/meetups/MeetupList";
 function AllMeetupsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadedMeetups, setLoadedMeetups] = useState([]);
+  const favoritesCtx = useContext(FavoritesContext);
+
+  function setFavoriteMeetupsFromStorage(meetups) {
+    const favoritesFromStorage = localStorage.getItem("favorite_meetup_ids");
+    const favoriteMeetupIds =
+      favoritesFromStorage !== null ? JSON.parse(favoritesFromStorage) : [];
+     let favorites = [];
+    meetups.forEach((meetup) => {
+      if (favoriteMeetupIds.some((meetupId) => meetupId === meetup.id)) {
+        favorites = favorites.concat(meetup);
+      }
+    });
+    favoritesCtx.setFavorites(favorites);
+  }
 
   useEffect(() => {
     setIsLoading(true);
@@ -45,6 +59,7 @@ function AllMeetupsPage() {
         setLoadedMeetups(meetups);
         setIsLoading(false);
       });
+    // eslint-disable-next-line
   }, []);
 
   if (isLoading) {

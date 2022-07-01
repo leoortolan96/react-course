@@ -11,12 +11,16 @@ export default function MeetupItem(props) {
     if (itemIsFavorite) {
       favoritesCtx.removeFavorite(props.id);
     } else {
-      favoritesCtx.addFavorite({
-        id: props.id,
-        image: props.image,
-        address: props.address,
-        description: props.description,
-      });
+      favoritesCtx.addFavorite(
+        {
+          id: props.id,
+          title: props.title,
+          image: props.image,
+          address: props.address,
+          description: props.description,
+        },
+        true
+      );
     }
   }
 
