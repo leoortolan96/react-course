@@ -3,16 +3,13 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
-import { FavoritesContextProvider } from "./store/favorites-context";
-import { LayoutContextProvider } from "./store/layout-context";
+import AppProvider from "./store/app-provider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <LayoutContextProvider>
-    <FavoritesContextProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </FavoritesContextProvider>
-  </LayoutContextProvider>
+  <AppProvider>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </AppProvider>
 );
