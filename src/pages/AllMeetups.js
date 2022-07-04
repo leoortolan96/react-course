@@ -28,6 +28,7 @@ import classes from "./AllMeetups.module.css";
 function AllMeetupsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadedMeetups, setLoadedMeetups] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(null);
   const favoritesCtx = useContext(FavoritesContext);
   const layoutCtx = useContext(LayoutContext);
 
@@ -45,12 +46,43 @@ function AllMeetupsPage() {
   }
 
   useEffect(() => {
-    setIsLoading(true);
-    fetch("https://react-course-43389-default-rtdb.firebaseio.com/meetups.json")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
+    // setIsLoading(true);
+    // fetch(
+    //   "https://react-course-43389-default-rtdb.firebaseio.comm/meetupss.json"
+    // )
+    //   .then((response) => {
+    //     console.log(response.ok);
+    //     if (!response.ok) {
+    //       throw Error("Failed to fetch resource - tretaa");
+    //     }
+    //     return response.json();
+    //   })
+    //   .then((data) => {
+    //     const meetups = [];
+    //     for (const key in data) {
+    //       const meetup = {
+    //         id: key,
+    //         ...data[key],
+    //       };
+    //       meetups.push(meetup);
+    //     }
+    //     setFavoriteMeetupsFromStorage(meetups);
+    //     setLoadedMeetups(meetups);
+    //     setIsLoading(false);
+    //   })
+    //   .catch((err) => console.log(err, "aaaaaaaa"));
+
+    // usando async await
+    async function fetchData() {
+      try {
+        setIsLoading(true);
+        const response = await fetch(
+          "https://react-course-43389-default-rtdb.firebaseio.com/meetups.json"
+        );
+        if (!response.ok) {
+          throw Error("Failed to fetch resource");
+        }
+        const data = await response.json();
         const meetups = [];
         for (const key in data) {
           const meetup = {
@@ -61,8 +93,15 @@ function AllMeetupsPage() {
         }
         setFavoriteMeetupsFromStorage(meetups);
         setLoadedMeetups(meetups);
+        setErrorMessage(null);
+      } catch (error) {
+        setErrorMessage("Error fetching meetups!");
+        console.log(error);
+      } finally {
         setIsLoading(false);
-      });
+      }
+    }
+    fetchData();
     // eslint-disable-next-line
   }, []);
 
@@ -74,6 +113,14 @@ function AllMeetupsPage() {
     );
   }
 
+  if (errorMessage) {
+    return (
+      <section>
+        <p>{errorMessage}</p>
+      </section>
+    );
+  }
+
   return (
     <section>
       <ul className={classes.top}>
@@ -81,7 +128,9 @@ function AllMeetupsPage() {
           <h1>All meetups page</h1>
         </li>
         <li>
-          <button onClick={() => layoutCtx.toggleIsGrid()}>{layoutCtx.isGridLayout ? "grid" : "lista"}</button>
+          <button onClick={() => layoutCtx.toggleIsGrid()}>
+            {layoutCtx.isGridLayout ? "grid" : "lista"}
+          </button>
         </li>
       </ul>
 
