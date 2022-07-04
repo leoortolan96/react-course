@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import MeetupsList from "../components/meetups/MeetupList";
 import FavoritesContext from "../store/favorites-context";
+import LayoutContext from "../store/layout-context";
+import classes from "./AllMeetups.module.css";
 
 // const DUMMY_DATA = [
 //   {
@@ -27,12 +29,13 @@ function AllMeetupsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadedMeetups, setLoadedMeetups] = useState([]);
   const favoritesCtx = useContext(FavoritesContext);
+  const layoutCtx = useContext(LayoutContext);
 
   function setFavoriteMeetupsFromStorage(meetups) {
     const favoritesFromStorage = localStorage.getItem("favorite_meetup_ids");
     const favoriteMeetupIds =
       favoritesFromStorage !== null ? JSON.parse(favoritesFromStorage) : [];
-     let favorites = [];
+    let favorites = [];
     meetups.forEach((meetup) => {
       if (favoriteMeetupIds.some((meetupId) => meetupId === meetup.id)) {
         favorites = favorites.concat(meetup);
@@ -73,7 +76,15 @@ function AllMeetupsPage() {
 
   return (
     <section>
-      <h1>All meetups page</h1>
+      <ul className={classes.top}>
+        <li>
+          <h1>All meetups page</h1>
+        </li>
+        <li>
+          <button onClick={() => layoutCtx.toggleIsGrid()}>{layoutCtx.isGridLayout ? "grid" : "lista"}</button>
+        </li>
+      </ul>
+
       <MeetupsList meetups={loadedMeetups} />
     </section>
   );

@@ -1,5 +1,9 @@
-.main {
+.mainList {
     margin: 3rem auto;
     width: 90%;
     max-width: 40rem;
+  }
+
+  .mainGrid {
+    margin: 3rem 50px;
   }
