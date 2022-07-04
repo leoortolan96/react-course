@@ -7,6 +7,8 @@
   background-color: #77002e;
   margin: 0;
   padding: 0 50px;
+  top: 0;
+  position: fixed;
 }
 
 .logo {
