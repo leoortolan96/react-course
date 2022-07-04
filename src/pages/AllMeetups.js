@@ -32,7 +32,7 @@ function AllMeetupsPage() {
   const [errorMessage, setErrorMessage] = useState(null);
   const favoritesCtx = useContext(FavoritesContext);
   const layoutCtx = useContext(LayoutContext);
-  const {enqueueSnackbar}= useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
   function setFavoriteMeetupsFromStorage(meetups) {
     const favoritesFromStorage = localStorage.getItem("favorite_meetup_ids");
@@ -99,10 +99,17 @@ function AllMeetupsPage() {
       } catch (error) {
         setErrorMessage("Error fetching meetups!");
         console.log(error);
-        enqueueSnackbar(<ul className={classes.snackbar}>
-          <li><h3>Error fetching meetups...</h3></li>
-          <li><p>Check your connection and try again...</p></li>
-        </ul>, {variant: 'error'});
+        enqueueSnackbar(
+          <ul className={classes.snackbar}>
+            <li>
+              <h3>Error fetching meetups...</h3>
+            </li>
+            <li>
+              <p>Check your connection and try again...</p>
+            </li>
+          </ul>,
+          { variant: "error" }
+        );
       } finally {
         setIsLoading(false);
       }
